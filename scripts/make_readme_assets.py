@@ -4,6 +4,8 @@ Run with: python scripts/make_readme_assets.py
 import os
 import warnings
 
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -123,28 +125,28 @@ plt.savefig(f'{OUT_DIR}/categorical_vs_target.png', dpi=150)
 plt.close()
 
 # ---------------------------------------------------------------------------
-# 6. Model comparison bar chart (from CV results observed in outputs/logs/train_v2_run.log)
+# 6. Model comparison bar chart
+#    Source: outputs/logs/train_v2_run.log (StratifiedKFold, 5 folds, seed=42).
+#    Only folds that actually finished logging before the run was interrupted
+#    are used -- LightGBM/XGBoost have 4 folds, CatBoost has 3.
 # ---------------------------------------------------------------------------
 model_scores = {
-    'LightGBM': [0.9674, 0.9672, 0.9671, 0.9672, 0.9672],
-    'XGBoost':  [0.9671, 0.9675, 0.9673, 0.9669, 0.9672],
-    'CatBoost': [0.9666, 0.9673, 0.9666, 0.9670, 0.9670],
+    'LightGBM': [0.9674, 0.9672, 0.9671, 0.9672],
+    'XGBoost':  [0.9671, 0.9675, 0.9673, 0.9669],
+    'CatBoost': [0.9666, 0.9673, 0.9666],
 }
 names = list(model_scores.keys())
 means = [np.mean(v) for v in model_scores.values()]
 stds = [np.std(v) for v in model_scores.values()]
-ensemble_mean = 0.9683
 
-fig, ax = plt.subplots(figsize=(8, 4.5))
+fig, ax = plt.subplots(figsize=(8, 4))
 colors = sns.color_palette('Set2', len(names))
 bars = ax.barh(names, means, xerr=stds, color=colors, edgecolor='white', capsize=5)
 for bar, m in zip(bars, means):
     ax.text(m + 0.0006, bar.get_y() + bar.get_height() / 2, f'{m:.4f}', va='center', fontsize=10)
-ax.axvline(ensemble_mean, color='#444', linestyle='--', linewidth=1.5, label=f'Ensemble  {ensemble_mean:.4f}')
-ax.set_xlabel('5-Fold CV Accuracy')
-ax.set_title('Model Comparison — Cross-Validated Accuracy', fontsize=14, fontweight='bold')
-ax.set_xlim(min(means) - 0.004, max(ensemble_mean, max(means)) + 0.004)
-ax.legend(fontsize=9, loc='lower right')
+ax.set_xlabel('Cross-Validated Accuracy (StratifiedKFold, seed=42)')
+ax.set_title('Model Comparison — Out-of-Fold Accuracy', fontsize=14, fontweight='bold')
+ax.set_xlim(min(means) - 0.004, max(means) + 0.004)
 sns.despine()
 plt.tight_layout()
 plt.savefig(f'{OUT_DIR}/model_comparison.png', dpi=150)
