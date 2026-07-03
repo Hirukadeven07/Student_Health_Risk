@@ -1,0 +1,36 @@
+# Claude Code
+.claude/
+
+# Data
+data/
+*.csv
+
+# Model / training artifacts
+outputs/
+catboost_info/
+*.log
+*.cbm
+*.pkl
+*.joblib
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
