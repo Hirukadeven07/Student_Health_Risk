@@ -33,17 +33,9 @@ The classes are heavily imbalanced — `at-risk` dominates at ~86% of the traini
 
 ---
 
-## 🗂 Dataset
+## 📋 Features & Schema
 
-Sourced from the Kaggle **Playground Series** competition. All files live in [`data/`](data/):
-
-| File | Description |
-|---|---|
-| `train.csv` | 690,088 labeled rows (includes `health_condition`) |
-| `test.csv` | 295,753 unlabeled rows (`id` 690088 – 985840) |
-| `sample_submission.csv` | Submission format template |
-
-### Features
+Sourced from the Kaggle **Playground Series** competition (13 input features + the `health_condition` target).
 
 **Numeric (7)**
 
@@ -152,7 +144,6 @@ All three models converge to essentially the same ~96.7% accuracy individually �
 
 ```
 Predicting Student Health Risk/
-├── data/                      # train.csv, test.csv, sample_submission.csv
 ├── notebooks/
 │   ├── student_health_risk.ipynb     # full pipeline: EDA → features → tuning → ensemble
 │   └── eda_visualizations.ipynb      # standalone, deep-dive visual EDA
@@ -200,7 +191,7 @@ The current `outputs/submission.csv` predicts, on the 295,753-row test set:
 | `unhealthy` | 19,405 | 6.6% |
 | `fit` | 13,982 | 4.7% |
 
-Format: `id, health_condition` — matching `data/sample_submission.csv`.
+Format: `id, health_condition`.
 
 ---
 
